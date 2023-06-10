@@ -1,0 +1,11 @@
+debug/chooselevelscene.o
+debug/main.o
+debug/mainscene.o
+debug/mypushbutton.o
+debug/playscene.o
+debug/qrc_res.o
+debug/qrc_qmake_qmake_qm_files.o
+debug/moc_chooselevelscene.o
+debug/moc_mainscene.o
+debug/moc_mypushbutton.o
+debug/moc_playscene.o

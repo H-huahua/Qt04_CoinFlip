@@ -20,6 +20,10 @@ public:
     void zoom1();
     void zoom2();
 
+    //重写按钮的按下 和 释放
+    void mousePressEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
+
 signals:
 
 };
