@@ -34,7 +34,7 @@ MyPushButton::MyPushButton(QString normalImg, QString pressImag){
 }
 
 
-
+//实现弹跳功能，分为向下和向上
 void MyPushButton::zoom1(){
     //创建动画对象：
     QPropertyAnimation * animation = new QPropertyAnimation(this,"geometry");
@@ -72,6 +72,7 @@ void MyPushButton::zoom2(){
     animation->start();
 }
 
+//实现点击切换效果，分为点击和松开
 void MyPushButton::mousePressEvent(QMouseEvent *e){
     if(this->pressImgPath !=""){//传入的摁下图片不为空，说明需要有切换状态
         QPixmap pix;

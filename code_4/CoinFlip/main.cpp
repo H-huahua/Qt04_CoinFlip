@@ -3,6 +3,7 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include "dataconfig.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,5 +20,8 @@ int main(int argc, char *argv[])
     }
     MainScene w;
     w.show();
+
+    //测试关卡的数据
+
     return a.exec();
 }

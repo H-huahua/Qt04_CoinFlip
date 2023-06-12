@@ -14,6 +14,8 @@ public:
     //重写paintEvent事件
     void paintEvent(QPaintEvent *event);
 
+    int gameArray[4][4];//二位数组  维护每个关卡的具体数据
+
 
 signals:
     void chooseSceneBack();
