@@ -29,6 +29,9 @@ public:
     //重写 按下 和 释放
     void mousePressEvent(QMouseEvent *e);
 
+    //是否胜利的标志
+    bool isWin;
+
 signals:
 
 };

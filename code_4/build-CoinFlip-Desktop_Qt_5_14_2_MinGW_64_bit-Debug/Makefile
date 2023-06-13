@@ -274,8 +274,10 @@ Makefile: ../CoinFlip/CoinFlip.pro ../../../../Development/Qt5/5.14.2/mingw73_64
 		../../../../Development/Qt5/5.14.2/mingw73_64/mkspecs/features/yacc.prf \
 		../../../../Development/Qt5/5.14.2/mingw73_64/mkspecs/features/lex.prf \
 		../CoinFlip/CoinFlip.pro \
+		../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Multimedia.prl \
 		../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Widgets.prl \
 		../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Gui.prl \
+		../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Network.prl \
 		../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Core.prl \
 		../../../../Development/Qt5/5.14.2/mingw73_64/lib/qtmain.prl \
 		../../../../Development/Qt5/5.14.2/mingw73_64/mkspecs/features/build_pass.prf \
@@ -487,8 +489,10 @@ Makefile: ../CoinFlip/CoinFlip.pro ../../../../Development/Qt5/5.14.2/mingw73_64
 ../../../../Development/Qt5/5.14.2/mingw73_64/mkspecs/features/yacc.prf:
 ../../../../Development/Qt5/5.14.2/mingw73_64/mkspecs/features/lex.prf:
 ../CoinFlip/CoinFlip.pro:
+../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Multimedia.prl:
 ../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Widgets.prl:
 ../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Gui.prl:
+../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Network.prl:
 ../../../../Development/Qt5/5.14.2/mingw73_64/lib/Qt5Core.prl:
 ../../../../Development/Qt5/5.14.2/mingw73_64/lib/qtmain.prl:
 ../../../../Development/Qt5/5.14.2/mingw73_64/mkspecs/features/build_pass.prf:

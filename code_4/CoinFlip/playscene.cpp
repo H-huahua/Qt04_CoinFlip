@@ -6,6 +6,9 @@
 #include "mypushbutton.h"
 #include <QTimer>
 #include <QLabel>
+#include <QPropertyAnimation>
+#include <QSound>
+
 #include "mycoin.h"
 #include "dataconfig.h"
 
@@ -38,9 +41,15 @@ PlayScene::PlayScene(int levelNum){
     //点击退出
     connect(quitAction,&QAction::triggered,[=](){
         this->close();
-
-
     });
+    //添加音效资源
+    //返回按钮音效
+    QSound *backSound = new QSound(":/res/BackButtonSound.wav",this);
+    //翻金币音效
+    QSound *flipSound = new QSound(":/res/ConFlipSound.wav",this);
+    //胜利音效
+    QSound *winSound = new QSound(":/res/LevelWinSound.wav",this);
+
     //返回按钮
     MyPushButton *backBtn = new MyPushButton(":/res/BackButton.png",":/res/BackButtonSelected.png");
     backBtn->setParent(this);
@@ -49,6 +58,8 @@ PlayScene::PlayScene(int levelNum){
     //点击返回
     connect(backBtn,&MyPushButton::clicked,[=](){
         qDebug()<< "游戏场景中点, 击了返回按钮";
+        //返回按钮的音效
+        backSound->play();
         //告诉主场景我反悔了，主场景监听ChooseLevelScene的返回按钮
         //做一个延时返回
         QTimer::singleShot(500,this,[=](){
@@ -78,6 +89,16 @@ PlayScene::PlayScene(int levelNum){
             this->gameArray[i][j] = config.mData[this->levelIndex][i][j];
         }
     }
+
+
+    //胜利图片的显示
+    QLabel * winLabel = new QLabel;
+    QPixmap tmpPix;
+    tmpPix.load(":/res/LevelCompletedDialogBg.png");
+    winLabel->setGeometry(0,0,tmpPix.width(),tmpPix.height());
+    winLabel->setPixmap(tmpPix);
+    winLabel->setParent(this);
+    winLabel->move((this->width() - tmpPix.width())*0.5,-tmpPix.height());
 
     //显示金币的背景图案
     for(int i=0;i<4;i++){
@@ -109,17 +130,88 @@ PlayScene::PlayScene(int levelNum){
             coin->posY = j;
             coin->flag = this->gameArray[i][j];//1正面  0反面
 
+            //将金币放入到金币的二维数组里  以便以后的维护
+            coinBtn[i][j] = coin;
+
             //点击金币，进行翻转
             connect(coin,&MyCoin::clicked,[=](){
+                //播放翻金币的音效
+                flipSound->play();
+
+                //点击按钮 将所有按钮先都禁用
+                for(int i = 0;i<4;i++){
+                    for(int j = 0;j<4;j++){
+                        this->coinBtn[i][j]->isWin = true;
+                    }
+                }
+
                 coin->changeFlag();
                 this->gameArray[i][j] = this->gameArray[i][j] == 0?1:0;
+                //翻转周围金币
+                QTimer::singleShot(300,this,[=](){
+                    if(coin->posX+1<=3){         //周围的右侧金币翻转条件
+                        coinBtn[coin->posX+1][coin->posY]->changeFlag();
+                        this->gameArray[coin->posX+1][coin->posY] = this->gameArray[coin->posX+1][coin->posY] == 0?1:0;
+                    }
+                    //左侧硬币翻转
+                    if(coin->posX-1>=0){         //周围的左侧金币翻转条件
+                        coinBtn[coin->posX-1][coin->posY]->changeFlag();
+                        this->gameArray[coin->posX-1][coin->posY] = this->gameArray[coin->posX-1][coin->posY] == 0?1:0;
+                    }
+                    //上侧硬币翻转
+                    if(coin->posY+1<=3){         //周围的上侧金币翻转条件
+                        coinBtn[coin->posX][coin->posY+1]->changeFlag();
+                        this->gameArray[coin->posX][coin->posY+1] = this->gameArray[coin->posX][coin->posY+1] == 0?1:0;
+                    }
+                    //下侧翻转
+                    if(coin->posY-1>=0){         //周围的下侧金币翻转条件
+                        coinBtn[coin->posX][coin->posY-1]->changeFlag();
+                        this->gameArray[coin->posX][coin->posY-1] = this->gameArray[coin->posX][coin->posY-1] == 0?1:0;
+                    }
+                    //翻转过程中，所有按钮禁用
+                    for(int i = 0;i<4;i++){
+                        for(int j = 0;j<4;j++){
+                            this->coinBtn[i][j]->isWin = false;
+                        }
+                    }
+
+                    //判断是否胜利
+                    this->isWin = true;
+                    for(int i = 0;i<4;i++){
+                        for(int j = 0;j<4;j++){
+                            if(coinBtn[i][j]->flag == false){
+                                this->isWin = false;
+                                break;
+                            }
+                        }
+                    }
+                    if(this->isWin == true){
+                        //添加胜利音效
+                        winSound->play();
+                        qDebug()<<"游戏胜利";
+                        //将所有按钮的胜利标志改为true
+                        for(int i = 0;i<4;i++){
+                            for(int j = 0;j<4;j++){
+                                coinBtn[i][j]->isWin = true;
+                            }
+                        }
+                        //将胜利的图片移动下来
+                        QPropertyAnimation * animation = new QPropertyAnimation(winLabel,"geometry");
+                        //设置时间间隔
+                        animation->setDuration(1000);
+                        //设置开始位置
+                        animation->setStartValue(QRect(winLabel->x(),winLabel->y(),winLabel->width(),winLabel->height()));
+                        //设置结束位置
+                        animation->setEndValue(QRect(winLabel->x(),winLabel->y()+114,winLabel->width(),winLabel->height()));
+                        //设置缓和曲线
+                        animation->setEasingCurve(QEasingCurve::OutBounce);
+                        //执行动画
+                        animation->start();
+                    }
+                });
             });
-
-
         }
-
     }
-
 }
 
 

@@ -66,7 +66,9 @@ MyCoin::MyCoin(QString btnImg){
 }
 
 void MyCoin::mousePressEvent(QMouseEvent *e){
-    if(this->isAnimation){return;}
+    if(this->isAnimation || this->isWin){
+        return;
+    }
     else{
         QPushButton::mousePressEvent(e);
     }
